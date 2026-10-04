@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f8f5ef" />
+    <meta name="description" content="A gentle GlowFlow pause to breathe, soften your shoulders, and feel a little lighter." />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <title>GlowFlow | A gentle reset</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" type="image/png" href="./icons/icon-192.png" />
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="glowflow.css" />
+    <script src="glowflow.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar" id="top">
+      <a class="brand" href="#top" aria-label="GlowFlow home">
+        <span class="brand-mark" aria-hidden="true">G</span>
+        <span class="brand-copy"><small>langsam leben</small><strong>GlowFlow</strong></span>
+      </a>
+
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="#benefits">Benefits</a>
+        <a href="#experience">Erlebnis</a>
+        <a href="#journal">Journal</a>
+        <a href="#ritual">Ritual</a>
+      </nav>
+
+      <div class="header-actions">
+        <div class="sound-control" aria-label="Rain ambience controls">
+          <button id="soundToggle" class="sound-button" type="button" aria-pressed="false">Rain off</button>
+          <label class="volume-control" for="volumeSlider">
+            <span>Volume</span>
+            <input id="volumeSlider" type="range" min="0" max="100" value="35" aria-label="Rain sound volume" />
+          </label>
+        </div>
+        <button id="resetButton" class="reset-button" type="button">Reset pause</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero-section" aria-labelledby="welcomeTitle">
+        <div class="hero-copy">
+          <p class="eyebrow accent">gentle reset for busy minds</p>
+          <h1 id="welcomeTitle">A softer place to land when life feels loud.</h1>
+          <p class="hero-text">A little space to slow down, breathe gently, and come back to yourself. No pressure to do it perfectly—just begin where you are.</p>
+          <div class="hero-actions">
+            <button id="startPause" class="primary-button" type="button">Start your pause <span aria-hidden="true">↗</span></button>
+            <button id="miniReset" class="secondary-button" type="button">2-minute reset</button>
+          </div>
+          <div class="hero-note">
+            <span class="note-flower" aria-hidden="true">✳</span>
+            <span>Come as you are.<br /><strong>Leave feeling a little lighter.</strong></span>
+          </div>
+        </div>
+
+        <div class="breathing-panel panel phase-inhale" id="breathe">
+          <p class="panel-label">Breathing ritual <span aria-hidden="true">/</span> Atemritual</p>
+          <div class="orb-stage" aria-hidden="true">
+            <span class="orb-halo halo-one"></span>
+            <span class="orb-halo halo-two"></span>
+            <div class="breath-orb"><span id="phaseText">Inhale</span></div>
+          </div>
+          <p id="phaseDescription" class="phase-description" aria-live="polite">Breathe in gently.</p>
+          <p class="breathing-note">Follow the glow if it feels good. Your breath can stay natural.</p>
+          <button id="breathingToggle" class="breathing-control" type="button" aria-pressed="false">Pause guide</button>
+        </div>
+      </section>
+
+      <section class="intention-section section" aria-labelledby="intentionTitle">
+        <div class="intention-card">
+          <div class="intention-heading">
+            <p class="eyebrow">Ein Moment für dich · a moment for you</p>
+            <h2 id="intentionTitle">What do you need a little more of?</h2>
+            <p>You don't have to arrive here feeling okay. Choose a small intention, or skip this and just breathe.</p>
+          </div>
+          <div class="intention-options" role="group" aria-label="Choose what you need a little more of">
+            <button class="intention-option" type="button" data-intention="joy" aria-pressed="false">A little joy</button>
+            <button class="intention-option" type="button" data-intention="focus" aria-pressed="false">A clearer head</button>
+            <button class="intention-option" type="button" data-intention="creative" aria-pressed="false">Room to create</button>
+            <button class="intention-option" type="button" data-intention="calm" aria-pressed="false">A softer landing</button>
+            <button class="intention-option" type="button" data-intention="unsure" aria-pressed="false">I'm not sure yet</button>
+          </div>
+          <p id="intentionSuggestion" class="intention-suggestion" aria-live="polite">There is no wrong answer. You can change your mind, or leave this blank.</p>
+          <div class="gentle-reminder">
+            <p>And if all you can do today is take one thing at a time, that is enough. Your well-being matters. The rest can wait.</p>
+            <p class="german-reminder" lang="de">Eins nach dem anderen. Dein Wohlbefinden ist wichtig. Der Rest kann warten.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="benefits-section section" id="benefits" aria-labelledby="benefitsTitle">
+        <div class="section-heading">
+          <p class="eyebrow">why it feels good</p>
+          <h2 id="benefitsTitle">A softer moment can change the feeling of a day.</h2>
+        </div>
+        <div class="benefit-grid">
+          <article class="benefit-card">
+            <span class="benefit-icon rose-icon" aria-hidden="true">✦</span>
+            <h3>Let the rush settle</h3>
+            <p>A quiet moment to step away from the noise and arrive right here.</p>
+          </article>
+          <article class="benefit-card">
+            <span class="benefit-icon sage-icon" aria-hidden="true">◌</span>
+            <h3>Find your rhythm</h3>
+            <p>Follow a gentle, changing breath guide at your own comfortable pace.</p>
+          </article>
+          <article class="benefit-card">
+            <span class="benefit-icon lilac-icon" aria-hidden="true">✧</span>
+            <h3>Make a little space</h3>
+            <p>Play for a moment, let a few bubbles go, and return to your day.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="experience-section section" id="experience" aria-labelledby="gameTitle">
+        <div class="game-heading">
+          <div>
+            <p class="eyebrow">a small playful pause</p>
+            <h2 id="gameTitle">Let the tension melt.</h2>
+            <p>Tap a bubble to let it go. Another will float in.</p>
+          </div>
+          <div class="score-box" aria-live="polite">
+            <strong id="scoreValue" aria-label="Bubbles popped">0</strong>
+          </div>
+        </div>
+        <div class="game-field" id="bubbleArea" aria-label="Pop the floating bubbles"></div>
+        <div class="game-footer">
+          <p id="gameMessage" aria-live="polite">Tap a bubble whenever you feel ready.</p>
+        </div>
+        <div class="pause-timer">
+          <div class="timer-copy"><span id="pauseStatus" aria-live="polite">Your pause is ready when you are.</span><strong id="timerText">02:00</strong></div>
+          <div class="progress-track" aria-label="Pause progress"><span id="pauseProgress"></span></div>
+        </div>
+      </section>
+
+      <section class="journal-section section" id="journal" aria-labelledby="journalTitle">
+        <div class="journal-heading">
+          <div>
+            <p class="eyebrow">a quiet corner for you</p>
+            <h2 id="journalTitle">Leave a little here.</h2>
+          </div>
+          <span class="journal-private">Saved on this device</span>
+        </div>
+        <p class="journal-intro">No perfect words needed. Write a thought, a feeling, or something kind you want to remember. Your note stays in this browser on this device; it is not sent anywhere.</p>
+        <div class="journal-prompts" aria-label="Writing prompts">
+          <button class="prompt-button" type="button" data-prompt="Right now, I feel...">Right now, I feel...</button>
+          <button class="prompt-button" type="button" data-prompt="I can let go of...">I can let go of...</button>
+          <button class="prompt-button" type="button" data-prompt="One kind thing for me is...">One kind thing for me is...</button>
+        </div>
+        <label class="visually-hidden" for="journalEntry">Write a private note</label>
+        <textarea id="journalEntry" maxlength="1000" placeholder="Let the words come as they are..."></textarea>
+        <div class="journal-footer">
+          <span id="journalStatus" aria-live="polite">Your note stays on this device.</span>
+          <span id="journalCount">0 / 1000</span>
+        </div>
+        <button id="clearJournal" class="text-button journal-clear" type="button">Clear note</button>
+      </section>
+
+      <section class="kindness-section" aria-labelledby="kindnessTitle">
+        <div class="kindness-copy">
+          <span class="kindness-icon" aria-hidden="true">✿</span>
+          <div>
+            <p class="eyebrow">a tiny kindness</p>
+            <h2 id="kindnessTitle">One gentle thing you can do for yourself.</h2>
+          </div>
+        </div>
+        <p id="kindnessSuggestion" class="kindness-suggestion" aria-live="polite">Unclench your jaw. Let your shoulders fall away from your ears.</p>
+        <button id="kindnessButton" class="text-button" type="button">Another little idea ↻</button>
+      </section>
+
+      <section class="ritual-section section" id="ritual" aria-labelledby="ritualTitle">
+        <div class="section-heading">
+          <p class="eyebrow">your little ritual</p>
+          <h2 id="ritualTitle">A simple ritual for right now.</h2>
+        </div>
+        <div class="ritual-grid">
+          <article class="ritual-step"><span>01</span><h3>Arrive</h3><p>Give yourself permission to pause.</p></article>
+          <article class="ritual-step"><span>02</span><h3>Breathe</h3><p>Let the soft glow guide your breathing.</p></article>
+          <article class="ritual-step"><span>03</span><h3>Let go</h3><p>Pop a few bubbles, then take the next moment as it comes.</p></article>
+        </div>
+      </section>
+
+      <section class="closing-note" aria-labelledby="closingTitle">
+        <p class="eyebrow">Your moment, whenever you need it</p>
+        <h2 id="closingTitle">Come in, breathe,<br />and leave feeling lighter.</h2>
+        <p class="closing-copy">You deserve a softer moment. Come back whenever you need one.</p>
+        <button id="closingReset" class="primary-button" type="button">Take another pause <span aria-hidden="true">↗</span></button>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="brand footer-brand" href="#top"><span class="brand-mark" aria-hidden="true">G</span><span>GlowFlow</span></a>
+      <p>Come in. Breathe. Leave a little lighter.</p>
+      <div class="app-install">
+        <button id="installApp" class="install-button" type="button" hidden>Install GlowFlow</button>
+        <p id="installHelp">On Android, use your browser menu to install. On iPhone, tap Share, then Add to Home Screen.</p>
+      </div>
+      <span id="soundStatus" class="sound-status" aria-live="polite"></span>
+    </footer>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js').catch((error) => {
+            console.error('Unable to register the GlowFlow offline app.', error);
+          });
+        });
+      }
+
+      let installPrompt;
+      const installButton = document.querySelector('#installApp');
+      window.addEventListener('beforeinstallprompt', (event) => {
+        event.preventDefault();
+        installPrompt = event;
+        installButton.hidden = false;
+      });
+      installButton.addEventListener('click', async () => {
+        if (!installPrompt) return;
+        await installPrompt.prompt();
+        await installPrompt.userChoice;
+        installPrompt = null;
+        installButton.hidden = true;
+      });
+      window.addEventListener('appinstalled', () => {
+        installButton.hidden = true;
+        document.querySelector('#installHelp').textContent = 'GlowFlow is on your home screen. Come back whenever you need a softer moment.';
+      });
+    </script>
+  </body>
+</html>
