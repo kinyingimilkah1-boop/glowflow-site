@@ -16,6 +16,7 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="glowflow.css" />
     <script src="glowflow.js" defer></script>
+    <script src="glowflow-auth.js" type="module"></script>
   </head>
   <body>
     <header class="topbar" id="top">
@@ -147,7 +148,7 @@
           </div>
           <span class="journal-private">Saved on this device</span>
         </div>
-        <p class="journal-intro">No perfect words needed. Write a thought, a feeling, or something kind you want to remember. Your note stays in this browser on this device; it is not sent anywhere.</p>
+        <p class="journal-intro" id="journalIntro">No perfect words needed. Write a thought, a feeling, or something kind you want to remember. Your note stays in this browser on this device; it is not sent anywhere.</p>
         <div class="journal-prompts" aria-label="Writing prompts">
           <button class="prompt-button" type="button" data-prompt="Right now, I feel...">Right now, I feel...</button>
           <button class="prompt-button" type="button" data-prompt="I can let go of...">I can let go of...</button>
@@ -160,6 +161,30 @@
           <span id="journalCount">0 / 1000</span>
         </div>
         <button id="clearJournal" class="text-button journal-clear" type="button">Clear note</button>
+        <div class="account-panel" aria-labelledby="accountTitle">
+          <div class="account-heading">
+            <div>
+              <p class="eyebrow">keep your note close</p>
+              <h3 id="accountTitle">Sync across your devices</h3>
+            </div>
+            <span id="accountBadge" class="account-badge">Private by default</span>
+          </div>
+          <p id="accountDescription" class="account-description">Create an account to keep your journal private and available when you sign in on another device.</p>
+          <form id="accountForm" class="account-form">
+            <label for="accountEmail">Email
+              <input id="accountEmail" name="email" type="email" autocomplete="email" required />
+            </label>
+            <label for="accountPassword">Password
+              <input id="accountPassword" name="password" type="password" autocomplete="current-password" minlength="8" required />
+            </label>
+            <div class="account-actions">
+              <button id="signInButton" class="secondary-button" type="submit">Log in</button>
+              <button id="signUpButton" class="install-button" type="button">Create account</button>
+              <button id="signOutButton" class="text-button" type="button" hidden>Log out</button>
+            </div>
+          </form>
+          <p id="accountStatus" class="account-status" role="status" aria-live="polite"></p>
+        </div>
       </section>
 
       <section class="kindness-section" aria-labelledby="kindnessTitle">

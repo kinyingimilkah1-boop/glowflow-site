@@ -81,7 +81,7 @@ function makeBubble(x, y, index) {
 function updateJournalStatus() {
   journalCount.textContent = `${journalEntry.value.length} / 1000`;
   try {
-    localStorage.setItem('glowflowJournal', journalEntry.value);
+    localStorage.setItem(journalEntry.dataset.storageKey || 'glowflowJournal', journalEntry.value);
     journalStatus.textContent = 'Saved privately on this device.';
   } catch (error) {
     console.error('Unable to save the journal note on this device.', error);
@@ -91,7 +91,7 @@ function updateJournalStatus() {
 
 function restoreJournal() {
   try {
-    const savedNote = localStorage.getItem('glowflowJournal');
+    const savedNote = localStorage.getItem(journalEntry.dataset.storageKey || 'glowflowJournal');
     if (savedNote !== null) {
       journalEntry.value = savedNote.slice(0, 1000);
       journalCount.textContent = `${journalEntry.value.length} / 1000`;
@@ -100,6 +100,28 @@ function restoreJournal() {
   } catch (error) {
     console.error('Unable to restore the journal note from this device.', error);
     journalStatus.textContent = 'Saved notes are unavailable in this browser.';
+  }
+}
+
+function restoreRainVolume() {
+  try {
+    const savedVolume = localStorage.getItem(volumeSlider.dataset.storageKey || 'glowflowSettings');
+    if (savedVolume !== null) {
+      const volume = Number(savedVolume);
+      if (Number.isInteger(volume) && volume >= 0 && volume <= 100) {
+        volumeSlider.value = String(volume);
+      }
+    }
+  } catch (error) {
+    console.error('Unable to restore the rain volume setting from this device.', error);
+  }
+}
+
+function saveRainVolume() {
+  try {
+    localStorage.setItem(volumeSlider.dataset.storageKey || 'glowflowSettings', volumeSlider.value);
+  } catch (error) {
+    console.error('Unable to save the rain volume setting on this device.', error);
   }
 }
 
@@ -239,7 +261,10 @@ soundToggle.addEventListener('click', async () => {
   }
 });
 
-volumeSlider.addEventListener('input', setRainVolume);
+volumeSlider.addEventListener('input', () => {
+  setRainVolume();
+  saveRainVolume();
+});
 document.querySelector('#resetButton').addEventListener('click', resetPause);
 document.querySelector('#miniReset').addEventListener('click', () => {
   startPause(120);
@@ -278,8 +303,9 @@ document.querySelectorAll('.prompt-button').forEach((button) => {
 journalEntry.addEventListener('input', updateJournalStatus);
 document.querySelector('#clearJournal').addEventListener('click', () => {
   journalEntry.value = '';
+  journalEntry.dispatchEvent(new Event('input', { bubbles: true }));
   try {
-    localStorage.removeItem('glowflowJournal');
+    localStorage.removeItem(journalEntry.dataset.storageKey || 'glowflowJournal');
     journalCount.textContent = '0 / 1000';
     journalStatus.textContent = 'Your note has been cleared from this device.';
   } catch (error) {
@@ -354,4 +380,5 @@ breathingToggle.addEventListener('click', () => {
 createBubbles();
 updatePause(pauseDuration);
 restoreJournal();
+restoreRainVolume();
 showBreathingPhase();

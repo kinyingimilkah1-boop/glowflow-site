@@ -188,6 +188,21 @@ main { width: min(1120px, calc(100% - 64px)); margin: 0 auto; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; clip-path: inset(50%); }
 .journal-footer { display: flex; justify-content: space-between; gap: 12px; margin-top: 9px; color: var(--muted); font-size: .68rem; }
 .journal-clear { margin-top: 12px; }
+.account-panel { margin-top: 25px; padding: 22px; border: 1px solid rgba(225,221,211,.9); border-radius: 18px; background: rgba(255,253,249,.72); }
+.account-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.account-heading .eyebrow { margin-bottom: 6px; color: #9a786b; }
+.account-heading h3 { margin: 0; font: 500 1.45rem var(--display); }
+.account-badge { flex: 0 0 auto; padding: 8px 11px; border-radius: 999px; background: var(--sage); color: #5f765f; font-size: .68rem; font-weight: 600; }
+.account-description { margin: 11px 0 15px; color: var(--muted); font-size: .82rem; line-height: 1.6; }
+.account-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: end; gap: 12px; }
+.account-form label { display: grid; gap: 6px; color: #687168; font-size: .72rem; font-weight: 650; }
+.account-form input { width: 100%; min-height: 42px; border: 1px solid #e6dfd4; border-radius: 10px; padding: 0 12px; background: rgba(255,255,255,.8); color: var(--ink); font-size: .83rem; }
+.account-form input:focus { border-color: #a7b8a5; outline: 3px solid rgba(132,157,132,.15); }
+.account-actions { display: flex; flex-wrap: wrap; grid-column: 1 / -1; align-items: center; gap: 9px; }
+.account-actions button { min-height: 39px; }
+.account-status { min-height: 1.2em; margin: 12px 0 0; color: #617661; font-size: .76rem; line-height: 1.5; }
+.account-status:empty { display: none; }
+.account-actions [hidden] { display: none; }
 
 .kindness-section { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 12px 25px; margin: 35px 0 16px; padding: 23px 27px; border: 1px solid rgba(225,221,211,.83); border-radius: 20px; background: linear-gradient(110deg, #f4e8e1, #f5f0e3 58%, #e9eee4); }
 .kindness-copy { display: flex; align-items: center; gap: 14px; }
@@ -286,6 +301,10 @@ main { width: min(1120px, calc(100% - 64px)); margin: 0 auto; }
   .prompt-button { font-size: .66rem; padding: 0 10px; }
   #journalEntry { min-height: 145px; font-size: .85rem; }
   .journal-footer { font-size: .62rem; }
+  .account-panel { padding: 17px 14px; }
+  .account-heading { align-items: flex-start; flex-direction: column; gap: 10px; }
+  .account-form { grid-template-columns: 1fr; }
+  .account-actions { grid-column: 1; }
   .kindness-section { grid-template-columns: 1fr; gap: 10px; margin: 22px 0 8px; padding: 18px; }
   .kindness-copy { align-items: flex-start; gap: 10px; }
   .kindness-icon { width: 37px; height: 37px; }
