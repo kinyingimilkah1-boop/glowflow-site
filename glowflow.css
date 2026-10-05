@@ -304,9 +304,13 @@ main { width: min(1120px, calc(100% - 64px)); margin: 0 auto; }
   .sound-status { right: 12px; bottom: 12px; }
 }
 @media (max-width: 380px) {
-  .volume-control { display: none; }
-  .header-actions { gap: 5px; }
-  .sound-button, .reset-button { padding: 0 8px; font-size: .6rem; }
+  html { scroll-padding-top: 155px; }
+  .topbar { grid-template-columns: minmax(0, 1fr); }
+  .header-actions { grid-column: 1; grid-row: 2; justify-content: space-between; gap: 5px; }
+  .main-nav { grid-column: 1; grid-row: 3; }
+  .volume-control { display: flex; align-items: center; gap: 6px; font-size: .62rem; }
+  .volume-control input { width: min(25vw, 100px); }
+  .sound-button, .reset-button { padding: 0 8px; font-size: .64rem; }
   .hero-actions { gap: 7px; }
   .primary-button, .secondary-button { padding: 0 12px; }
 }

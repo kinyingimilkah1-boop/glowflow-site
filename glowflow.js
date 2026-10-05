@@ -159,7 +159,7 @@ function setSoundStatus(message) {
 
 function setRainVolume() {
   if (rainGain && audioContext) {
-    rainGain.gain.setTargetAtTime(Number(volumeSlider.value) / 100 * 0.09, audioContext.currentTime, 0.05);
+    rainGain.gain.setTargetAtTime(Number(volumeSlider.value) / 100 * 1.2, audioContext.currentTime, 0.05);
   }
 }
 
