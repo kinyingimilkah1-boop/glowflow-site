@@ -213,6 +213,7 @@ main { width: min(1120px, calc(100% - 64px)); margin: 0 auto; }
 .footer-brand .brand-mark { width: 31px; height: 31px; font-size: .95rem; }
 .footer-brand > span:last-child { font: 500 1rem var(--display); }
 .site-footer p { margin: 0; font-size: .75rem; }
+.footer-credit { display: block; margin-top: 4px; font-size: .68rem; }
 .app-install { display: grid; max-width: 350px; justify-items: end; gap: 7px; }
 .app-install > p { color: var(--muted); font-size: .67rem; line-height: 1.5; text-align: right; }
 .install-button { min-height: 37px; border: 1px solid #b9cbb9; border-radius: 999px; padding: 0 15px; background: var(--sage); color: #536b57; font-size: .75rem; font-weight: 650; cursor: pointer; }
