@@ -357,6 +357,9 @@ async function initializeAccount() {
         });
       });
     });
+    const { data, error } = await supabase.auth.getSession();
+    if (error) throw error;
+    await handleSession(data.session?.user || null);
   } catch (error) {
     console.error('Unable to load account support for GlowFlow.', error);
     setSignedOutView();
