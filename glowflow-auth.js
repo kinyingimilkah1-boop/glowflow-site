@@ -245,7 +245,7 @@ async function loadJournalForUser(user) {
 }
 
 async function handleSession(user) {
-  if (user?.id === currentUser?.id) return;
+  if (user && user.id === currentUser?.id) return;
   window.clearTimeout(saveTimeout);
   window.clearTimeout(settingsSaveTimeout);
 
@@ -294,6 +294,7 @@ async function signUp() {
     if (error) throw error;
 
     if (data.session) {
+      await handleSession(data.user);
       setAccountStatus('Your account is ready. Your journal will sync privately.');
     } else {
       setAccountStatus('Check your email for a confirmation link to finish creating your account.');
@@ -312,11 +313,12 @@ async function signIn(event) {
   setAccountBusy(true);
   setAccountStatus('Signing in…');
   try {
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email: accountEmail.value.trim(),
       password: accountPassword.value
     });
     if (error) throw error;
+    await handleSession(data.user);
     accountPassword.value = '';
   } catch (error) {
     showAccountError('Log in', error);
@@ -335,6 +337,7 @@ async function signOut() {
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
     accountPassword.value = '';
+    await handleSession(null);
     setAccountStatus('You have logged out. Your private device note is still here.');
   } catch (error) {
     showAccountError('Log out', error);
@@ -357,13 +360,16 @@ async function initializeAccount() {
         });
       });
     });
-    const { data, error } = await supabase.auth.getSession();
-    if (error) throw error;
-    await handleSession(data.session?.user || null);
+    supabase.auth.getSession()
+      .then(({ data, error }) => {
+        if (error) throw error;
+        return handleSession(data.session?.user || null);
+      })
+      .catch((error) => showAccountError('Account session', error));
   } catch (error) {
     console.error('Unable to load account support for GlowFlow.', error);
     setSignedOutView();
-    setAccountStatus('Sign-in is required, but account services could not load. Check your connection and refresh to try again.');
+    setAccountStatus('Account services could not load. You can continue without an account, or refresh to try again.');
   }
 }
 
@@ -374,5 +380,13 @@ showAccountGateButton.addEventListener('click', openAccountGate);
 signOutButton.addEventListener('click', signOut);
 journalEntry.addEventListener('input', scheduleJournalSave);
 volumeSlider.addEventListener('input', scheduleSettingsSave);
+
+try {
+  if (localStorage.getItem(GUEST_MODE_KEY) === 'true') {
+    continueAsGuest();
+  }
+} catch (error) {
+  console.error('Unable to check saved guest mode on this device.', error);
+}
 
 initializeAccount();

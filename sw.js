@@ -1,4 +1,4 @@
-const CACHE_NAME = 'glowflow-shell-v5';
+const CACHE_NAME = 'glowflow-shell-v6';
 const APP_FILES = [
   './',
   './index.html',
