@@ -3,11 +3,16 @@ const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_PtAS6g8u7oU4gEXrm4WeOg_PUhqWiTN
 const SUPABASE_JS_URL = 'https://esm.sh/@supabase/supabase-js@2';
 
 const accountForm = document.querySelector('#accountForm');
+const accountGate = document.querySelector('#accountGate');
 const accountEmail = document.querySelector('#accountEmail');
 const accountPassword = document.querySelector('#accountPassword');
 const signInButton = document.querySelector('#signInButton');
 const signUpButton = document.querySelector('#signUpButton');
+const continueAsGuestButton = document.querySelector('#continueAsGuest');
+const showAccountGateButton = document.querySelector('#showAccountGate');
 const signOutButton = document.querySelector('#signOutButton');
+const accountUser = document.querySelector('#accountUser');
+const accountUserEmail = document.querySelector('#accountUserEmail');
 const accountStatus = document.querySelector('#accountStatus');
 const accountBadge = document.querySelector('#accountBadge');
 const accountDescription = document.querySelector('#accountDescription');
@@ -23,6 +28,7 @@ let saveTimeout;
 let settingsSaveTimeout;
 let isLoadingJournal = false;
 let isLoadingSettings = false;
+const GUEST_MODE_KEY = 'glowflowGuestMode';
 
 function setAccountStatus(message) {
   accountStatus.textContent = message;
@@ -73,19 +79,27 @@ function restoreRainVolume(settings) {
 
 function setSignedOutView() {
   currentUser = null;
+  document.body.dataset.authReady = 'false';
+  accountGate.hidden = false;
+  accountUser.hidden = true;
   journalEntry.dataset.storageKey = 'glowflowJournal';
   volumeSlider.dataset.storageKey = 'glowflowSettings';
   accountEmail.disabled = false;
   accountPassword.disabled = false;
   signInButton.hidden = false;
   signUpButton.hidden = false;
+  continueAsGuestButton.disabled = false;
+  continueAsGuestButton.hidden = false;
   signOutButton.hidden = true;
+  showAccountGateButton.hidden = true;
+  continueAsGuestButton.hidden = false;
   signInButton.textContent = 'Log in';
   accountPassword.autocomplete = 'current-password';
   accountBadge.textContent = 'Private by default';
-  accountDescription.textContent = 'Create an account to keep your journal private and available when you sign in on another device.';
-  journalIntro.textContent = 'No perfect words needed. Write a thought, a feeling, or something kind you want to remember. Your note stays in this browser on this device; it is not sent anywhere.';
+  accountDescription.textContent = 'New here? Create an account. Already have one? Log in with your email and password.';
+  journalIntro.textContent = 'Guest notes are stored only in this browser on this device. Sign in to save notes to your account.';
   journalPrivate.textContent = 'Saved on this device';
+  setAccountStatus('Log in to sync privately across devices, or continue without an account.');
   try {
     setJournalContent(localStorage.getItem('glowflowJournal') || '', 'Your note stays on this device.');
     restoreRainVolume();
@@ -94,6 +108,27 @@ function setSignedOutView() {
     setJournalContent('', 'This browser could not access saved notes.');
     restoreRainVolume();
   }
+}
+
+function continueAsGuest() {
+  setSignedOutView();
+  try {
+    localStorage.setItem(GUEST_MODE_KEY, 'true');
+  } catch (error) {
+    console.error('Unable to remember guest mode on this device.', error);
+  }
+  accountGate.hidden = true;
+  document.body.dataset.authReady = 'true';
+  accountUserEmail.textContent = 'Guest';
+  accountUser.hidden = false;
+  showAccountGateButton.hidden = false;
+  continueAsGuestButton.disabled = false;
+}
+
+function openAccountGate() {
+  accountGate.hidden = false;
+  setAccountStatus('Log in or create an account to sync privately across devices.');
+  accountEmail.focus();
 }
 
 async function saveJournal() {
@@ -154,8 +189,19 @@ function scheduleSettingsSave() {
 
 async function loadJournalForUser(user) {
   currentUser = user;
+  try {
+    localStorage.removeItem(GUEST_MODE_KEY);
+  } catch (error) {
+    console.error('Unable to clear guest mode after signing in.', error);
+  }
   journalEntry.dataset.storageKey = `glowflowJournal:${user.id}`;
   volumeSlider.dataset.storageKey = getSettingsStorageKey(user.id);
+  accountUserEmail.textContent = user.email || '';
+  accountUser.hidden = false;
+  showAccountGateButton.hidden = true;
+  signOutButton.hidden = false;
+  continueAsGuestButton.disabled = true;
+  continueAsGuestButton.hidden = true;
   accountEmail.disabled = true;
   accountPassword.disabled = true;
   signInButton.hidden = true;
@@ -166,6 +212,8 @@ async function loadJournalForUser(user) {
   journalIntro.textContent = 'Write freely. Your journal is saved to your private account and synced across your devices.';
   journalPrivate.textContent = 'Private account sync';
   setAccountStatus('Loading your private journal…');
+  journalEntry.value = '';
+  journalStatus.textContent = 'Loading your private journal…';
 
   const { data, error } = await supabase
     .from('glowflow_journal')
@@ -202,7 +250,17 @@ async function handleSession(user) {
   window.clearTimeout(settingsSaveTimeout);
 
   if (!user) {
-    setSignedOutView();
+    let guestMode = false;
+    try {
+      guestMode = localStorage.getItem(GUEST_MODE_KEY) === 'true';
+    } catch (error) {
+      console.error('Unable to check saved guest mode on this device.', error);
+    }
+    if (guestMode) {
+      continueAsGuest();
+    } else {
+      setSignedOutView();
+    }
     return;
   }
 
@@ -212,6 +270,11 @@ async function handleSession(user) {
     console.error('Unable to load the private GlowFlow journal.', error);
     setAccountStatus(`Journal could not be loaded: ${error.message || 'Please check your connection.'}`);
     journalStatus.textContent = 'Your account is signed in, but the journal could not be loaded.';
+  } finally {
+    if (currentUser?.id === user.id) {
+      accountGate.hidden = true;
+      document.body.dataset.authReady = 'true';
+    }
   }
 }
 
@@ -296,12 +359,15 @@ async function initializeAccount() {
     });
   } catch (error) {
     console.error('Unable to load account support for GlowFlow.', error);
-    setAccountStatus('Account features are unavailable right now. Your journal still saves on this device.');
+    setSignedOutView();
+    setAccountStatus('Sign-in is required, but account services could not load. Check your connection and refresh to try again.');
   }
 }
 
 accountForm.addEventListener('submit', signIn);
 signUpButton.addEventListener('click', signUp);
+continueAsGuestButton.addEventListener('click', continueAsGuest);
+showAccountGateButton.addEventListener('click', openAccountGate);
 signOutButton.addEventListener('click', signOut);
 journalEntry.addEventListener('input', scheduleJournalSave);
 volumeSlider.addEventListener('input', scheduleSettingsSave);

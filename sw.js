@@ -1,9 +1,10 @@
-const CACHE_NAME = 'glowflow-shell-v4';
+const CACHE_NAME = 'glowflow-shell-v5';
 const APP_FILES = [
   './',
   './index.html',
   './glowflow.css',
   './glowflow.js',
+  './glowflow-auth.js',
   './manifest.webmanifest',
   './icons/icon-192.png',
   './icons/icon-512.png',

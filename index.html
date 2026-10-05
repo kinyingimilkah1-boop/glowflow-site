@@ -18,7 +18,43 @@
     <script src="glowflow.js" defer></script>
     <script src="glowflow-auth.js" type="module"></script>
   </head>
-  <body>
+  <body class="auth-required">
+    <section id="accountGate" class="account-gate" aria-labelledby="gateTitle">
+      <div class="account-gate-card">
+        <a class="brand" href="#top" aria-label="GlowFlow">
+          <span class="brand-mark" aria-hidden="true">G</span>
+          <span class="brand-copy"><small>langsam leben</small><strong>GlowFlow</strong></span>
+        </a>
+        <p class="eyebrow accent">a softer place to land</p>
+        <h1 id="gateTitle">Welcome to your moment.</h1>
+        <p class="account-gate-copy">Log in or create an account to sync your journal and rain-volume setting privately. You can also continue without an account.</p>
+        <div class="account-panel">
+          <div class="account-heading">
+            <div>
+              <p class="eyebrow">your private space</p>
+              <h3 id="accountTitle">Sign in to GlowFlow</h3>
+            </div>
+            <span id="accountBadge" class="account-badge">Account required</span>
+          </div>
+          <p id="accountDescription" class="account-description">New here? Create an account. Already have one? Log in with your email and password.</p>
+          <form id="accountForm" class="account-form">
+            <label for="accountEmail">Email
+              <input id="accountEmail" name="email" type="email" autocomplete="email" required />
+            </label>
+            <label for="accountPassword">Password
+              <input id="accountPassword" name="password" type="password" autocomplete="current-password" minlength="8" required />
+            </label>
+            <div class="account-actions">
+              <button id="signInButton" class="secondary-button" type="submit">Log in</button>
+              <button id="signUpButton" class="install-button" type="button">Create account</button>
+            </div>
+          </form>
+          <p id="accountStatus" class="account-status" role="status" aria-live="polite">Checking your account…</p>
+          <button id="continueAsGuest" class="text-button continue-guest" type="button" disabled>Continue without account</button>
+        </div>
+        <p class="account-gate-note">Your account keeps your journal private to you.</p>
+      </div>
+    </section>
     <header class="topbar" id="top">
       <a class="brand" href="#top" aria-label="GlowFlow home">
         <span class="brand-mark" aria-hidden="true">G</span>
@@ -41,6 +77,11 @@
           </label>
         </div>
         <button id="resetButton" class="reset-button" type="button">Reset pause</button>
+        <div id="accountUser" class="account-user" hidden>
+          <span id="accountUserEmail"></span>
+          <button id="showAccountGate" class="text-button" type="button" hidden>Sign in</button>
+          <button id="signOutButton" class="text-button" type="button">Log out</button>
+        </div>
       </div>
     </header>
 
@@ -161,30 +202,6 @@
           <span id="journalCount">0 / 1000</span>
         </div>
         <button id="clearJournal" class="text-button journal-clear" type="button">Clear note</button>
-        <div class="account-panel" aria-labelledby="accountTitle">
-          <div class="account-heading">
-            <div>
-              <p class="eyebrow">keep your note close</p>
-              <h3 id="accountTitle">Sync across your devices</h3>
-            </div>
-            <span id="accountBadge" class="account-badge">Private by default</span>
-          </div>
-          <p id="accountDescription" class="account-description">Create an account to sync new journal notes and rain volume privately across devices. Notes already saved on this device stay here.</p>
-          <form id="accountForm" class="account-form">
-            <label for="accountEmail">Email
-              <input id="accountEmail" name="email" type="email" autocomplete="email" required />
-            </label>
-            <label for="accountPassword">Password
-              <input id="accountPassword" name="password" type="password" autocomplete="current-password" minlength="8" required />
-            </label>
-            <div class="account-actions">
-              <button id="signInButton" class="secondary-button" type="submit">Log in</button>
-              <button id="signUpButton" class="install-button" type="button">Create account</button>
-              <button id="signOutButton" class="text-button" type="button" hidden>Log out</button>
-            </div>
-          </form>
-          <p id="accountStatus" class="account-status" role="status" aria-live="polite"></p>
-        </div>
       </section>
 
       <section class="kindness-section" aria-labelledby="kindnessTitle">
